@@ -1,0 +1,24 @@
+name: test
+
+on:
+  push:
+permissions:
+      id-token:      write  # This is required for requesting the JWT
+      contents:      write  # This is required for stefanzweifel/git-auto-commit-action
+      pull-requests: write  # This is required for mshick/add-pr-comment@v2.8.2
+
+jobs:
+  test:
+    runs-on: runners_poc_test
+
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v4.1.1 # checkout the repository content to github runner.
+        with:
+          fetch-depth: 0
+          ref:         ${{ github.head_ref }} # Do this to avoid checking out the repository in a detached state.
+
+      - name: Test
+        run: |
+          nslookup ipam.got.volvocars.net
+          
